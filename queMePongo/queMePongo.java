@@ -2,14 +2,16 @@ class Prenda{
     TipoPrenda tipoPrenda;
     Material material;
     Color colorPrincipal;
+    Color colorSecundario;
 
-    Prenda(TipoPrenda tipoPrenda, Material material, Color colorPrincipal){
+    Prenda(TipoPrenda tipoPrenda, Material material, Color colorPrincipal, Color colorSecundario){
 
-        //VALIDAR QUE SE PASAN TODOS LOS PARAMETROS, CASO CONTARIO, LANZAR EXCEPCION
+        //VALIDAR QUE SE PASAN TODOS LOS PARAMETROS (no validar el color secundario), CASO CONTARIO, LANZAR EXCEPCION
 
         this.tipoPrenda = tipoPrenda;
         this.material = material;
         this.colorPrincipal = colorPrincipal;
+        this.colorSecundario = colorSecundario;
     }
 
     Categoria categoria(){
@@ -17,8 +19,12 @@ class Prenda{
     }
 }
 
-public enum Material{
-    MATERIALES
+enum Material{
+    ALGODON,
+    JEAN,
+    PLASTICO,
+    LAYCRA,
+    CUERO
 }
 
 class Color{
@@ -35,6 +41,9 @@ abstract class TipoPrenda{
     Categoria categoria;
 
     TipoPrenda(Categoria categoria){
+        if(!this.esCategoriaValida(categoria)){
+            // LANZAR EXCEPCION
+        }
         this.categoria = categoria;
     }
 
@@ -48,11 +57,6 @@ abstract class TipoPrenda{
 class Zapatos extends TipoPrenda{
 
     Zapatos(Categoria categoria){
-        if(!this.esCategoriaValida(categoria)){
-
-            //LANZAR EXCEPCION
-
-        }
         super(categoria);
     }
 
@@ -69,11 +73,6 @@ class Zapatos extends TipoPrenda{
 class CamisaMangasCortas extends TipoPrenda{
 
     CamisaMangasCortas(Categoria categoria){
-        if(!this.esCategoriaValida(categoria)){
-
-            //LANZAR EXCEPCION
-
-        }
         super(categoria);
     }
 
@@ -90,11 +89,6 @@ class CamisaMangasCortas extends TipoPrenda{
 class Pantalon extends TipoPrenda{
 
     Pantalon(Categoria categoria){
-        if(!this.esCategoriaValida(categoria)){
-
-            //LANZAR EXCEPCION
-
-        }
         super(categoria);
     }
 
@@ -108,7 +102,7 @@ class Pantalon extends TipoPrenda{
     }
 }
 
-public enum Categoria{
+enum Categoria{
     PARTE_SUPERIOR, 
     CALZADO, 
     PARTE_INFERIOR, 
