@@ -1,5 +1,8 @@
 import static java.util.Objects.requireNonNull;
 
+// PATRON BUILDER -> USO UNA CLASE PARA CONFIGURAR LA CLASE FINAL QUE QUIERO CREAR. ME PERMITE HACERLO POR ETAPAS, TENER UNA REPRESENTACION MUTABLE DE UN OBJETO NO MUTABLE,
+//                   DELEGAR LAS VALIDACIONES, TENER VALORES DE ATRIBUTOS POR DEFECTO.
+
 class Borrador{
     private TipoPrenda tipoPrenda;
     private Material material;
@@ -34,7 +37,6 @@ class Borrador{
 
     public Prenda crearPrenda(){
 
-        // VALIDAR QUE NINGUN ATRIBUTO SEA NULL (menos color secundario), CASO CONTARIO, LANZAR EXCEPCION
         requireNonNull(tipoPrenda, "Debe especificar el tipo de prenda");
         requireNonNull(material, "Debe especificar el material");
         requireNonNull(colorPrincipal, "Debe especificar el color principal");
