@@ -83,6 +83,10 @@ class Prenda{
     public Categoria categoria(){
         return tipoPrenda.getCategoria();
     }
+
+    public boolean esAptaParaTemperatura(int temperatura){
+        return tipoPrenda.esAptaParaTemperatura(temperatura);
+    }
 }
 
 enum Material{
@@ -104,19 +108,26 @@ class Color{
 }
 
 enum TipoPrenda{
-    ZAPATOS(Categoria.CALZADO),
-    CAMISA_MANGAS_CORTAS(Categoria.PARTE_SUPERIOR),
-    PANTALON(Categoria.PARTE_INFERIOR);
+    ZAPATOS(Categoria.CALZADO, 25),
+    CAMISA_MANGAS_CORTAS(Categoria.PARTE_SUPERIOR, 35),
+    PANTALON(Categoria.PARTE_INFERIOR, 20),
+    REMERA_MANGAS_LARGAS(Categoria.PARTE_SUPERIOR, 20);
 
     private Categoria categoria;
+    private int temperaturaMaximaOptima;
 
-    private TipoPrenda(Categoria categoria){
+    private TipoPrenda(Categoria categoria, int temperaturaMaximaOptima){
         this.categoria = categoria;
+        this.temperaturaMaximaOptima = temperaturaMaximaOptima;
     }
 
     public Categoria getCategoria(){
         return categoria;
-    } 
+    }
+
+    public boolean esAptaParaTemperatura(int temperatura){
+        return temperaturaMaximaOptima > temperatura;
+    }
 }
 
 enum Categoria{
@@ -132,4 +143,84 @@ enum Trama{
     LUNARES,
     CUADROS,
     ESTAMPADO;
+}
+
+interface ServicioMeteorologico{
+    int obtenerTemperatura(String lugar);
+}
+
+class ServicioMeteorologicoAccuWeather implements ServicioMeteorologico{
+    private Map<String, Object> ultimasRespuestas;
+    private AccuWeatherAPI api;
+    private int tiempoDeValidez;
+
+    // TODO: Constructor
+    public int obtenerTemperatura(String lugar){
+        if (!this.ultimasRespuestas.contains(lugar) || this.ultimasRespuestas.get(lugar).expiro()) {
+            ultimasRespuestas.put(lugar, new RespuestaMeteorologica(this.consultarApi(lugar), this.proximaExpiracion()));
+        }
+        return this.ultimasRespuestas.get(lugar).getTemperatura();
+    }
+
+    private LocalDateTime proximaExpiracion() {
+        return LocalDateTime.now().plus(this.tiempoDeValidez);
+    }
+
+    private Map<String, Object> consultarApi(String lugar) {
+        return this.api.getWeather(lugar).get(0).get("Temperature");
+    }
+}
+
+public class RespuestaMeteorologica {
+    private LocalDateTime expiracion;
+    private int temperatura;
+
+    // TODO: Constructor.
+
+    public boolean expiro() {
+        return this.expiracion.isAfter(LocalDateTime.now);
+    }
+
+    public int getTemperatura(){
+        return temperatura;
+    }
+}
+
+
+class AsesorDeImagen{
+    private ServicioMeteorologico servicioMeteorologico;
+
+    // TODO: Constructor y validaciones.
+
+    public Atuendo sugerirAtuendo(String lugar){
+        int temperatura = this.servicioMeteorologico.obtenerTemperatura(lugar);
+        // TODO: llamar al singleton guardaropas y que devuelva todas las posibles combinaciones que existen.
+
+        return combinaciones.filter(atuendo -> atuendo.aptoParaTemperatura(temperatura)).first();
+    }
+}
+
+class GuardaRopas{
+    private List<Prenda> prendas;
+    // TODO: Constructor y validaciones. Debe ser un singleton.
+
+    // TODO: Cada vez que se crea una prenda, se agrega a la lista.
+
+    // TODO: Metodo para generar una lista con todos los atuendos posibles y devolverlos.
+}
+
+class Atuendo{
+    private Prenda parteSuperior;
+    private Prenda parteInferior;
+    private Prenda calzado;
+    private Prenda accesorio;
+
+    // TODO: Constructor y validaciones.
+
+    public boolean aptoParaTemperatura(int temperatura){
+        return parteSuperior.esAptaParaTemperatura(temperatura) &&
+        parteInferior.esAptaParaTemperatura(temperatura) &&
+        calzado.esAptaParaTemperatura(temperatura) &&
+        accesorio.esAptaParaTemperatura(temperatura);
+    }
 }
