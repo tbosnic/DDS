@@ -12,7 +12,7 @@ public class RespuestaMeteorologica {
   }
 
   public boolean expiro() {
-    return this.expiracion.isAfter(LocalDateTime.now());
+    return this.expiracion.isBefore(LocalDateTime.now());
   }
 
   public int getTemperatura(){
