@@ -14,9 +14,9 @@ public class AsesorDeImagen {
     this.servicioMeteorologico = servicioMeteorologico;
   }
 
-  public Atuendo sugerirAtuendo(String lugar){
+  public Atuendo sugerirAtuendo(String lugar, Guardaropas guardaropas){
     int temperatura = this.servicioMeteorologico.obtenerTemperatura(lugar);
-    List<Atuendo> combinaciones = Guardaropas.instance().combinacionesPosibles();
+    List<Atuendo> combinaciones = guardaropas.combinacionesPosibles();
     return combinaciones.stream().filter(atuendo -> atuendo.aptoParaTemperatura(temperatura)).collect(Collectors.toList()).get(0);
   }
 }

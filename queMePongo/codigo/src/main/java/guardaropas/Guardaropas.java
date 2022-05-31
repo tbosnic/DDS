@@ -1,24 +1,37 @@
-package guardaropas;
+package codigo.src.main.java.guardaropas;
+import codigo.src.main.java.usuario.Usuario;
+import guardaropas.Atuendo;
 
 import prenda.Prenda;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Guardaropas {
   private List<Prenda> prendas;
-  private static final Guardaropas INSTANCE = new Guardaropas();
+  private Usuario propietario;
 
-  public static Guardaropas instance(){
-    return INSTANCE;
-  }
+  private List<PropuestaModificacion> propuestas;
 
-  private Guardaropas(){
-    prendas = new ArrayList<Prenda>();
+  private
+
+  public Guardaropas(Usuario propietario){
+    prendas = new ArrayList<>();
+    propuestas = new ArrayList<>();
+    this.propietario = propietario;
   }
 
   public void agregarPrenda(Prenda prenda){
     prendas.add(prenda);
+  }
+
+  public void quitarPrenda(Prenda prenda){
+    prendas.remove(prenda);
+  }
+
+  public List<PropuestaModificacion> propuestasPendientes(){
+    this.propuestas.stream().filter(propuesta -> propuesta.getEstado() == Estado.PENDIENTE).collect(Collectors.toList());
   }
 
   public List<Atuendo> combinacionesPosibles(){

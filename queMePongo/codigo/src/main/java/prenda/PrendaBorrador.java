@@ -1,6 +1,10 @@
-package prenda;
-
-import guardaropas.Guardaropas;
+package codigo.src.main.java.prenda;
+import prenda.Prenda;
+import prenda.Categoria;
+import prenda.Color;
+import prenda.Material;
+import prenda.TipoPrenda;
+import prenda.Trama;
 
 import static java.util.Objects.requireNonNull;
 
@@ -39,7 +43,7 @@ public class PrendaBorrador {
     return this;
   }
 
-  public void crearPrenda(){
+  public Prenda crearPrenda(){
 
     requireNonNull(tipoPrenda, "Debe especificar el tipo de prenda");
     requireNonNull(material, "Debe especificar el material");
@@ -47,7 +51,7 @@ public class PrendaBorrador {
 
     // OTRA MANERA DE HACERLO ES CREAR UNA FUNCION validarParametros(tipoPrenda, material, colorPrincipal) (*)
 
-    Guardaropas.instance().agregarPrenda(new Prenda(tipoPrenda, material, colorPrincipal, colorSecundario, trama));
+    return new Prenda(this.tipoPrenda, this.material, this.colorPrincipal, this.colorSecundario, this.trama);
   }
 }
 
